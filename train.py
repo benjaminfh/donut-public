@@ -113,7 +113,7 @@ def train(config):
                    (len(special_tokens) == len(set(special_tokens))), \
                 "special_tokens should be unique and have a form of <.*\/>"
 
-            model_module.model.decoder.add_special_tokens(special_tokens)
+            model_module.model.decoder.add_special_tokens(special_tokens, replace_additional_special_tokens=False)
             
         for split in ["train", "validation"]:
             datasets[split].append(
