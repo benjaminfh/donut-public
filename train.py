@@ -11,6 +11,7 @@ import random
 from io import BytesIO
 from os.path import basename
 from pathlib import Path
+import re
 
 import numpy as np
 import pytorch_lightning as pl
@@ -100,6 +101,19 @@ def train(config):
             )
         if task_name == "docvqa":
             model_module.model.decoder.add_special_tokens(["<yes/>", "<no/>"], replace_additional_special_tokens=False)
+
+        if task_name == "floorplans":
+            special_tokens = config.special_token_name_or_path
+            if special_tokens:
+                special_tokens = json.load(open(special_tokens))
+
+            print("adding special tokens: ", special_tokens)
+
+            assert (len(special_tokens) == len([re.match(r"<.*\/>", t) for t in special_tokens])) and \
+                   (len(special_tokens) == len(set(special_tokens))), \
+                "special_tokens should be unique and have a form of <.*\/>"
+
+            model_module.model.decoder.add_special_tokens(special_tokens)
             
         for split in ["train", "validation"]:
             datasets[split].append(
