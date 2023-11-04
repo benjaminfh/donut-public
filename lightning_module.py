@@ -185,6 +185,7 @@ class DonutDataPLModule(pl.LightningDataModule):
                 DataLoader(
                     val_dataset,
                     batch_size=batch_size,
+                    num_workers=self.config.num_workers,
                     pin_memory=True,
                     shuffle=False,
                 )
