@@ -138,5 +138,3 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# ignore my test yaml
-/config/train_floorplan.yaml
